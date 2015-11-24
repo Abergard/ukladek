@@ -105,13 +105,6 @@ int zad22(void){
 
 int main(void){
 
-//wave();
-//przygasanie_led();
-//mruganie_dioda();
-//button_led();
-//snake();
-//test();
-
 
 /* Uruchomienie zadania 2.1
  *
