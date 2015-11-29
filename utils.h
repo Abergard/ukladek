@@ -5,7 +5,7 @@
 
 #pragma once
 
- //#define F_CPU 16000000UL
+#define F_CPU 16000000UL
 #include <avr/io.h> // zawiera on definicje, odpowiednie dla naszego mikrokontrolera.
 #include <util/delay.h>
 #include <stdint.h>
