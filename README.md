@@ -31,3 +31,7 @@ Aby nasze diody staly sie wyjsciami, musimy zapisac do rejestru "DDRB" wartosc 2
 
 - Przygasanie swiatelek
 
+##Zadanie 2
+
+##Zadanie 3
+- Prymitywny stoper (Chcemy by zegar, wykorzystujac przerwania, inkrementowal nam licznik).
