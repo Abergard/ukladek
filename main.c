@@ -34,7 +34,7 @@ void test()
         uint8_t i, liczba=3;
         for (i=0; i<8; i++){
             PORTA = ~liczba;                    // operator negacji. Do portu przekazujemy odpowiednio 111111110, 11111101
-            liczba = liczba * 2;                // 1,2,4,8,16,32.64,128   //liczba = 1 zapalanie diody w kolejnoœci / liczba = 2 zapalanie dwóch diod
+            liczba = liczba * 2;                // 1,2,4,8,16,32.64,128   //liczba = 1 zapalanie diody w kolejnosci / liczba = 2 zapalanie dwoch diod
 
             _delay_ms(5000);
 
@@ -48,36 +48,36 @@ void test()
 
 
 
-/* Zadanie 1: chcemy zmusiæ nasz¹ diodê do mrugania, co jedn¹ sekundê, czyli z czêstotliwoœci¹ 1Hz
- * chcemy zmusic nó¿kê mikrokontrolera by przyjmowa³a stan niski lub wysoki
- * Rejestry s¹ to komórki w specjalnej pamiêci do której procesor ma bezpoœredni, szybki dostêp
- * Wszystkie nó¿ki na samym pocz¹tku, po w³¹czeniu zasilania s¹ domyœlnie wejœciami, odpowiada za to rejestr "DDRx" (gdzie x to literka portu)
- * Aby nasze diody sta³y siê wyjœciami, musimy zapisaæ do rejestru "DDRB" wartoœæ 2 (czyli binarnie 00000010). Stan logiczny portu kontroluje rejestr "PORTx"
+/* Zadanie 1: chcemy zmusic nasza diode do mrugania, co jedna sekunde, czyli z czestotliwoscia 1Hz
+ * chcemy zmusic nozke mikrokontrolera by przyjmowala stan niski lub wysoki
+ * Rejestry sa to komorki w specjalnej pamieci do ktorej procesor ma bezposredni, szybki dostep
+ * Wszystkie nozki na samym poczatku, po wlaczeniu zasilania sa domyslnie wejsciami, odpowiada za to rejestr "DDRx" (gdzie x to literka portu)
+ * Aby nasze diody staly sie wyjsciami, musimy zapisac do rejestru "DDRB" wartosc 2 (czyli binarnie 00000010). Stan logiczny portu kontroluje rejestr "PORTx"
  * (gdzie x to literka portu)
  *
  *
  *
- * Ka¿dy port posiada 3 w³asne rejestry:
-    Rejestr danych (PORTx) odpowiada za stany logiczne na porcie (wysoki lub niski), kiedy pin jest ustawiony jako wyjœcie, w przeciwnym wypadku - kiedy port jest wejœciem, rejestr ten w³¹cza lub wy³¹cza rezystor podci¹gaj¹cy dla pinu.
-    Rejestr kierunku (DDRx) odpowiada za ustawienie pinu jako wejœcia lub jako wyjœcia. Domyœlnie po resecie wszystkie piny s¹ wejœciami, aby ustawiæ wybrany jako wyjœcie, nale¿y ustawiæ odpowiedni bit rejestru DDRx.
-    Dane pinów wejœciowych (PINx) jest to rejestr, który mo¿na odczytaæ, aby sprawdziæ stan logiczny na pinie, kiedy ten jest wejœciem. W kodzie mo¿na to zrobiæ przy pomocy instrukcji warunkowej if()
+ * Kazdy port posiada 3 wlasne rejestry:
+    Rejestr danych (PORTx) odpowiada za stany logiczne na porcie (wysoki lub niski), kiedy pin jest ustawiony jako wyjscie, w przeciwnym wypadku - kiedy port jest wejsciem, rejestr ten wlacza lub wylacza rezystor podciagajacy dla pinu.
+    Rejestr kierunku (DDRx) odpowiada za ustawienie pinu jako wejscia lub jako wyjscia. Domyslnie po resecie wszystkie piny sa wejsciami, aby ustawic wybrany jako wyjscie, nalezy ustawic odpowiedni bit rejestru DDRx.
+    Dane pinow wejsciowych (PINx) jest to rejestr, ktory mozna odczytac, aby sprawdzic stan logiczny na pinie, kiedy ten jest wejsciem. W kodzie mozna to zrobic przy pomocy instrukcji warunkowej if()
  * */
 
 
 
 void mruganie_dioda()
 {
-    /* Konfiguracja odpowiednich pinów jako wyjœcia
-     * POTRB |= (1<<PB1);                           ustawiamy wybrany bit na "1" np. PB0 -> zgaszamy bez zmiany wartoœci pozosta³ych
-     * PORTB &= ~(1<<PB2);                          ustawiamy wybrany bit na "0" np. PB0 -> zapalony bez zmiany wartoœci pozosta³ych
+    /* Konfiguracja odpowiednich pinow jako wyjscia
+     * POTRB |= (1<<PB1);                           ustawiamy wybrany bit na "1" np. PB0 -> zgaszamy bez zmiany wartosci pozostalych
+     * PORTB &= ~(1<<PB2);                          ustawiamy wybrany bit na "0" np. PB0 -> zapalony bez zmiany wartosci pozostalych
      * PORTD |= (1<<5)|(1<<)|(1<<7);                ustawia bity 5, 6 i 7, portu PORTD
      * PORTD &= ~(1<<2)|(1<<3);                     zeruje bity 2 i 3, portu PORTD
      * PORTD ^= (1<<1)|(1<<2);                      odwraca bity 1 i 2, portu PORTD
-     * PORTD & PD2;                                 zwraca wartoœæ 1, je¿eli pin 2 portu PORTD jest ustawiony (ma wartoœæ 1)
+     * PORTD & PD2;                                 zwraca wartosc 1, jezeli pin 2 portu PORTD jest ustawiony (ma wartosc 1)
      */
 
-    DDRA = 0xff;                                // Do rejestru DDRA wpisujemy wartoœc 11111111 aby wszystkie piny Porty by³y wyjœciami
-    PORTA = 0xff;                               // wy³aczenie wszystkich diod (Katoda) 0b11111111;
+    DDRA = 0xff;                                // Do rejestru DDRA wpisujemy wartosc 11111111 aby wszystkie piny Porty byly wyjsciami
+    PORTA = 0xff;                               // wylaczenie wszystkich diod (Katoda) 0b11111111;
 
     while(1){
 
@@ -92,12 +92,12 @@ void mruganie_dioda()
 }
 
 /*
- * Zadanie 2. Zaœwiecenie diod LED po przyciœniêciu przycisku PIN0
+ * Zadanie 2. Zaswiecenie diod LED po przycisnieciu przycisku PIN0
  */
 void button_led(){
 
-    DDRB  =  0b00000000;            // Ustawienie PB0-7 na wejœcie
-    PORTB =  0b00000001;            // PB0 zmieniamy wartoœc logiczna
+    DDRB  =  0b00000000;            // Ustawienie PB0-7 na wejscie
+    PORTB =  0b00000001;            // PB0 zmieniamy wartosc logiczna
     DDRA  =  0b11111111;            // wyjscie dla wszystkich z PA
 
     while(1)
@@ -117,7 +117,7 @@ void button_led(){
 
 
 /*
- * Zadanie 3. Mruganie diodami w formie wê¿a
+ * Zadanie 3. Mruganie diodami w formie weza
  */
 void snake()
 {
@@ -156,13 +156,13 @@ void snake()
 }
 
 /*
- * Zadanie 4 Przygasanie œwiate³ek
+ * Zadanie 4 Przygasanie swiatelek
  */
 
 void przygasanie_led()
 {
-    DDRA = 0xff;                                // Do rejestru DDRA wpisujemy wartoœc 11111111 aby wszystkie piny Porty by³y wyjœciami
-    PORTA = 0xff;                               // wy³aczenie wszystkich diod (Katoda) 0b11111111;
+    DDRA = 0xff;                                // Do rejestru DDRA wpisujemy wartosc 11111111 aby wszystkie piny Porty byly wyjsciami
+    PORTA = 0xff;                               // wylaczenie wszystkich diod (Katoda) 0b11111111;
 
     int t = 1000;
     int x = 0;
@@ -170,7 +170,7 @@ void przygasanie_led()
 
     while(1)
     {
-        PORTA = 0b11111111;                     // wy³aczenie wszystkich diod (Katoda)
+        PORTA = 0b11111111;                     // wylaczenie wszystkich diod (Katoda)
         wait(t - x);                          // // 1000, 999, 998, 997 ... 0, 1, 2, 3, ,..., 1000
         PORTA = 0b00000000;
         wait(x);                              // 0, 1, 2, 3, ... 1000, 999, 998 , ..., 0
@@ -189,7 +189,7 @@ void przygasanie_led()
 }
 
 /*
- * Fala œwiate³ek
+ * Fala swiatelek
  */
 
 void rozjasnienie(liczba, t, i)
@@ -197,9 +197,9 @@ void rozjasnienie(liczba, t, i)
     int x=0, minus=1, k=0;
     for (int j=0; j<t; j++)
     {
-        PORTA  = 0b11111111; // wy³aczenie
+        PORTA  = 0b11111111; // wylaczenie
         wait(t - x);
-        PORTA = ~liczba; // w³aczenie
+        PORTA = ~liczba; // wlaczenie
         wait(x);
 
         x = x + minus;
@@ -226,8 +226,8 @@ void przygasniecie(liczba, t, i)
 
 void wave()
 {
-    DDRA = 0xff;                                // Do rejestru DDRA wpisujemy wartoœc 11111111 aby wszystkie piny Porty by³y wyjœciami
-    PORTA = 0x00;                               // wy³aczenie wszystkich diod (Katoda) 0b11111111;
+    DDRA = 0xff;                                // Do rejestru DDRA wpisujemy wartosc 11111111 aby wszystkie piny Porty byly wyjsciami
+    PORTA = 0x00;                               // wylaczenie wszystkich diod (Katoda) 0b11111111;
 
     while(1)
     {
