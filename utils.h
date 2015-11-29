@@ -1,3 +1,10 @@
+
+#ifndef UTILS_H_
+#define UTILS_H_
+
+
+
+#endif /* UTILS_H_ */
 /*
  * Tomasz Kowalczyk
  * Lukasz Zawistowicz
@@ -5,11 +12,14 @@
 
 #pragma once
 
-#define F_CPU 16000000UL
+//#define F_CPU 16000000UL
 #include <avr/io.h> // zawiera on definicje, odpowiednie dla naszego mikrokontrolera.
 #include <util/delay.h>
 #include <stdint.h>
+#include <stdbool.h>
+
 #include <avr/interrupt.h>
+
 
 //#define sbi(x,y) x |= _BV(y) //set bit - using bitwise OR operator
 //#define cbi(x,y) x &= ~(_BV(y)) //clear bit - using bitwise AND operator
