@@ -1,3 +1,7 @@
+/*
+ * Tomasz Kowalczyk
+ * Lukasz Zawistowicz
+ */
 // Definicje:
 // Atmegas32 posiada dwa Timery 8 i 16 bitów
 // Preskaler - wew dzielnik czestotliwosci taktowania dostarczanej do taktowania timera
