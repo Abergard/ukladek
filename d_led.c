@@ -1,3 +1,7 @@
+/*
+ * Tomasz Kowalczyk
+ * Lukasz Zawistowicz
+ */
 #include <avr/io.h>			// dołączenie głównego systemowego  pliku nagłówkowego
 #include <avr/interrupt.h>	// dołączenie pl. nagłówkowego potrzebnego do obsł. przerwań
 #include <avr/pgmspace.h>	// dołączenie pl. nagłówkowego potrzebnego do odczytu
