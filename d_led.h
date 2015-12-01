@@ -1,4 +1,7 @@
-
+/*
+ * Tomasz Kowalczyk
+ * Lukasz Zawistowicz
+ */
 #ifndef _d_led_h		// dyrektywy zabezpieczające przed wielokrotnym dołączaniem
 #define _d_led_h		// tego samego pliku nagłówkowego jeśli będzie dołączany
 						// w wielu różnych plikach programu
