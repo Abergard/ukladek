@@ -15,7 +15,7 @@
 #define 	CA3 	(1<<PC2)		// CA3 oznacza bit nr.2 portu C
 #define 	CA4 	(1<<PC3)		// CA4 oznacza bit nr.3 portu C
 
-#define MASKA_ANODY (CA1|CA2|CA3|CA4)
+#define MASKA_ANODY (CA1|CA2|CA3|CA4) 
 
 
 
