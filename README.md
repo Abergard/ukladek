@@ -35,3 +35,6 @@ Aby nasze diody staly sie wyjsciami, musimy zapisac do rejestru "DDRB" wartosc 2
 
 ##Zadanie 3
 - Prymitywny stoper (Chcemy by zegar, wykorzystujac przerwania, inkrementowal nam licznik).
+
+##Zadanie 4
+- Wyswietlanie na wywietlaczu LED numeru przycisnietego przycisku klawiatury.
