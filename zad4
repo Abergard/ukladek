@@ -1,0 +1,181 @@
+
+// Tomasz Kowalczyk
+// Łukasz Zawistowicz
+
+#include <avr/io.h>				// dołączenie głównego systemowego  pliku nagłówkowego
+#include <avr/interrupt.h>
+#include <util/delay.h>
+#include <math.h>
+
+ int cyfry[] = {~0b00111111, ~0b00000110, ~0b01011011, ~0b01001111, ~0b01100110, ~0b01101101, ~0b01111101, ~0b00000111, ~0b01111111, ~0b01101111};
+
+ int licznik = 0;
+ int pozycja=8;
+ int milisekundy = 0;
+ int wyswietlacz[] = {0,0,0,0};
+ int kolumna;
+ int wiersz;
+
+ int naiwny_log(int liczba){
+	 if(liczba==8) return 3;
+	 else if(liczba==4) return 2;
+	 else if(liczba==2) return 1;
+	 return 0;
+ }
+
+ void config_kolumn(){
+	 DDRC = 0xF0;
+	 PINC = 0x0F;
+	 PORTC = 0x0F;
+ }
+
+ int odczyt_kolumn(){
+	 config_kolumn();
+	 for(int i=0; i<32; i++)
+		;
+	 return 15-PINC;
+ }
+
+ void config_wierszy(){
+	 DDRC = 0x0F;
+	 PINC = 0xF0;
+	 PORTC = 0xF0;
+ }
+
+ int odczyt_wierszy(){
+	 config_wierszy();
+	 for(int i=0; i<32; i++);
+	 return 15 - PINC/16;
+ }
+
+ void wyswietl_licznik()
+ {
+	 wyswietlacz[0]=licznik%10;
+	 wyswietlacz[1]=(licznik/10)%10;
+	 wyswietlacz[2]=(licznik/100)%10;
+	 wyswietlacz[3]=(licznik/1000)%10;
+	 PORTA = cyfry[wyswietlacz[milisekundy%4]];
+	 PORTB = ~pozycja;
+	 if(pozycja == 1)
+	 pozycja = 8;
+	 else
+	 pozycja= pozycja/2;
+ }
+
+
+ #define timeout 5
+ #define maxTime 1000
+
+int number = 0;
+ void turnOff(int nr){
+	 PORTA |= 1 << (7 - nr);
+ }
+
+ void turnOn(int nr){
+	 PORTA &= ~(1 << (7 - nr));
+ }
+
+ void displayNumber(int number)
+ {
+	 static const int numbers[10] =
+	 {
+		 0b00000011, //0
+		 0b10011111, //1
+		 0b00100101, //2
+		 0b00001101, //3
+		 0b10011001, //4
+		 0b01001001, //5
+		 0b01000001, //6
+		 0b00011111, //7
+		 0b00000001, //8
+		 0b00001001, //9
+	 };
+	 PORTA = numbers[number];
+ }
+
+ void switchSegment(int number){
+	 static const int segments[4] =
+	 {
+		 0b11111110, //0
+		 0b11111101, //1
+		 0b11111011, //2
+		 0b11110111, //3
+	 };
+	 PORTB = segments[number];
+ }
+
+
+ int getW(){
+	 DDRD = 0xF0;
+	 PORTD = 0x0F;
+	 for(int i = 0; i < 10; ++i);
+	 return naiwny_log(15 - PIND);
+ }
+
+
+ int getK(){
+	 DDRD = 0x0F;
+	 PORTD = 0xF0;
+	 for(int i = 0; i < 10; ++i);
+	 return naiwny_log(15 - (PIND/16));
+ }
+
+ int segmentTimeout = 0;
+ int a1 = 0;
+ int a2 = 0;
+
+
+ ISR(TIMER0_COMP_vect) {
+
+         milisekundy++;
+		 if(milisekundy == 400)
+		 {
+			number = getW() * 4 + getK();
+			a2 = number/10;
+			a1 = number;
+			if(a1 >= 10)
+			{
+				a1 -= 10;
+			}
+			//_delay_ms(timeout);
+			milisekundy=0;
+		 }
+
+
+		++segmentTimeout;
+
+		if(segmentTimeout == 1){
+			 switchSegment(1);
+			 displayNumber(a2);
+		 }else if(segmentTimeout == 2){
+			 switchSegment(0);
+			 displayNumber(a1);
+			 segmentTimeout = 0;
+		 }
+
+
+ }
+
+ void config(){
+     OCR0 = 250;
+     TCCR0 |= (0<<WGM00) | (1<< WGM01);
+     TCCR0 |= (1<<CS00) | (1<< CS01) | (0<<CS02);
+     TIMSK |= (1<<OCIE0);
+     sei();
+ }
+
+ int main(void) {
+
+     DDRA = 0xFF;
+     PORTA = 0xFF;
+
+     DDRB = 0xFF;
+     PORTB = 0x0F;
+
+     config();
+     while(1){
+
+     }
+ }
+
+
