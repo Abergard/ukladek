@@ -1,3 +1,4 @@
+
 // Tomasz Kowalczyk
 // Łukasz Zawistowicz
 
@@ -5,6 +6,7 @@
 #include <avr/interrupt.h>
 #include <util/delay.h>
 #include <math.h>
+#include <stdbool.h>
 
 int timer = 0;
 bool numberOfSegmentToUse = 0;
@@ -17,8 +19,7 @@ void wasteSomeCpuCycle()
 
 int naiwny_log(int liczba)
 {
-    switch(liczba)
-    {
+    switch(liczba){
       case 8:
           return 3;
 
@@ -26,10 +27,10 @@ int naiwny_log(int liczba)
           return 2;
 
       case 2:
-          return 1
+          return 1;
 
       default:
-          return 0
+          return 0;
     }
 }
 
