@@ -38,3 +38,6 @@ Aby nasze diody staly sie wyjsciami, musimy zapisac do rejestru "DDRB" wartosc 2
 
 ##Zadanie 4
 - Wyswietlanie na wywietlaczu LED numeru przycisnietego przycisku klawiatury.
+
+##Zadanie 5
+- Wyswietlanie na wywietlaczu LED ruchomego napisu.
