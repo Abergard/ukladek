@@ -12,4 +12,5 @@ typedef struct Game
     GameEnum level;
     GameEnum dificulty;
     GameEnum state;
+    char word[16];
 }Game;

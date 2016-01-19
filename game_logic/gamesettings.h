@@ -45,3 +45,30 @@ const char* toString(GameEnum gameEnum)
     };
     return names[gameEnum];
 }
+
+const char* getWord(size_t index)
+{
+    static char* words[] =
+    {//  123456789.......
+        "Wielkanocne",//1
+        "alaa",//2
+        "aaa"//3
+        // "    Dificulty   ",//4
+        // "  <<  Press >>  ",//5
+        // "       Win      ",//6
+        // "       Lose     ",//7
+        // "      Turtle    ",//8
+        // "     Beginner   ",//9
+        // "      Normal    ",//10
+        // "      Asian     ",//11
+        // ""//12
+        // ""//13
+        // ""//14
+        // ""//15
+        // ""//16
+        // ""//17
+        // ""//18
+        // ""//19
+    };
+    return words[index];
+}
