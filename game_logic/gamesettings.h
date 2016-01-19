@@ -1,7 +1,5 @@
 #pragma once
 
-#define NUMBER_OF_CHAR_IN_ROW 16
-
 typedef enum GameEnum
 {
     GAMELEVEL_CASUAL = 0,
@@ -24,12 +22,6 @@ typedef enum GameEnum
     GAMESTATE_GAME = 13,
     GAMESTATE_PAUSE = 14
 }GameEnum;
-
-typedef struct LcdData
-{
-    char* firstLine[NUMBER_OF_CHAR_IN_ROW];
-    char* secondLine[NUMBER_OF_CHAR_IN_ROW];
-}LcdData;
 
 const char* toString(GameEnum gameEnum)
 {
