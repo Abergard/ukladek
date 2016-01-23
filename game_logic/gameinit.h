@@ -1,19 +1,22 @@
 #pragma once
-#include "gamelog.h"
+#include <stdlib.h>
+#include "game.h"
 #include "gamestate.h"
 
-void gameInit_press(Game* game)
+void goToChooseLevelState_gamelogic(Game* game)
 {
+    srand(game->time);
     gameChooseLevel(game);
 }
 
 void gameInit(Game* game)
 {
-    game->state = GAMESTATE_MENU;
-    game->upperLcdState = GAMEMENU_GAMENAME;
-    game->lowerLcdState = GAMEINFO_PRESSKEY;
-    game->up = &gameInit_press;
-    game->down = &gameInit_press;
-    game->enter = &gameInit_press;
-    game->back = &gameInit_press;
+    setGameLevel(game,
+                 GAMEMENU_GAMENAME,
+                 GAMEINFO_PRESSKEY,
+                 &goToChooseLevelState_gamelogic,
+                 &goToChooseLevelState_gamelogic,
+                 &goToChooseLevelState_gamelogic,
+                 &goToChooseLevelState_gamelogic,
+                 &noAction);
 }

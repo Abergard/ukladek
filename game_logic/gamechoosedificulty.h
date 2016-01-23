@@ -1,39 +1,44 @@
 #pragma once
 #include "gamesettings.h"
 #include "gamechooselevel.h"
+#include "gamestate.h"
+#include "game.h"
 
-void gameChooseDificulty_pressEnter(Game* game)
+void setDificultyAndGoToTheNextLevel_gamelogic(Game* game)
 {
-    game->dificulty = game->lowerLcdState;
+    saveActionStateAsDificulty(game);
+    gameStartLevel(game);
 }
 
-void gameChooseDificulty_pressBack(Game* game)
+void backToPreviousLevel_gamelogic(Game* game)
 {
     gameChooseLevel(game);
 }
 
-void gameChooseDificulty_pressUp(Game* game)
+void showPreviousDificulty_gamelogic(Game* game)
 {
-    if(game->lowerLcdState != GAMEDIFICULTY_TURTLE)
+    if(!isGameActionEqual(game, GAMEDIFICULTY_TURTLE))
     {
-        --game->lowerLcdState;
+        previousGameAction(game);
     }
 }
 
-void gameChooseDificulty_pressDown(Game* game)
+void showNextDificulty_gamelogic(Game* game)
 {
-    if(game->lowerLcdState != GAMEDIFICULTY_ASIAN)
+    if(!isGameActionEqual(game, GAMEDIFICULTY_ASIAN))
     {
-        ++game->lowerLcdState;
+        nextGameAction(game);
     }
 }
 
 void gameChooseDificulty(Game* game)
 {
-    game->upperLcdState = GAMEMENU_GAMEDIFICULTY;
-    game->lowerLcdState = GAMEDIFICULTY_NORMAL;
-    game->up = &gameChooseDificulty_pressUp;
-    game->down = &gameChooseDificulty_pressDown;
-    game->back = &gameChooseDificulty_pressBack;
-    game->enter = &gameChooseDificulty_pressEnter;
+    setGameLevel(game,
+                 GAMEMENU_GAMEDIFICULTY,
+                 GAMEDIFICULTY_NORMAL,
+                 &showPreviousDificulty_gamelogic,
+                 &showNextDificulty_gamelogic,
+                 &backToPreviousLevel_gamelogic,
+                 &setDificultyAndGoToTheNextLevel_gamelogic,
+                 &noAction);
 }

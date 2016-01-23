@@ -3,7 +3,9 @@
 void gameInit(Game* game);
 void gameChooseLevel(Game* game);
 void gameChooseDificulty(Game* game);
+void gameStartLevel(Game* game);
 
 #include "gameinit.h"
 #include "gamechooselevel.h"
 #include "gamechoosedificulty.h"
+#include "gamestartlevel.h"

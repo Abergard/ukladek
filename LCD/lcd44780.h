@@ -20,7 +20,7 @@
 // tu ustalamy za pomoc¹ zera lub jedynki czy sterujemy pinem RW
 //	0 - pin RW pod³¹czony na sta³e do GND
 //	1 - pin RW pod³¹czony do mikrokontrolera
-#define USE_RW 0
+#define USE_RW 1
 
 //----------------------------------------------------------------------------------------
 //
@@ -29,13 +29,14 @@
 //----------------------------------------------------------------------------------------
 // tu konfigurujemy port i piny do jakich pod³¹czymy linie D7..D4 LCD
 #define LCD_D7PORT  A
-#define LCD_D7 3
+#define LCD_D7 3				// D7-PA3
 #define LCD_D6PORT  A
-#define LCD_D6 2
+#define LCD_D6 2				// D6-PA2
 #define LCD_D5PORT  A
-#define LCD_D5 1
+#define LCD_D5 1				// D5-PA1
 #define LCD_D4PORT  A
-#define LCD_D4 0
+#define LCD_D4 0				// D4-PA0
+
 
 
 // tu definiujemy piny procesora do których pod³¹czamy sygna³y RS,RW, E
@@ -43,7 +44,7 @@
 #define LCD_RS 5
 
 #define LCD_RWPORT A
-#define LCD_RW 1
+#define LCD_RW 6
 
 #define LCD_EPORT A
 #define LCD_E 4
@@ -65,19 +66,8 @@
 //----------------------------------------------------------------------------------------
 
 #define USE_LCD_LOCATE	1			// ustawia kursor na wybranej pozycji Y,X (Y=0-3, X=0-n)
-
 #define USE_LCD_CHAR 	1			// wysy³a pojedynczy znak jako argument funkcji
-
-#define USE_LCD_STR_P 	0			// wysy³a string umieszczony w pamiêci FLASH
-#define USE_LCD_STR_E 	0			// wysy³a string umieszczony w pamiêci FLASH
-
-#define USE_LCD_INT 	0			// wyœwietla liczbê dziesietn¹ na LCD
-#define USE_LCD_HEX 	0			// wyœwietla liczbê szesnastkow¹ na LCD
-
 #define USE_LCD_DEFCHAR		1		// wysy³a zdefiniowany znak z pamiêci RAM
-#define USE_LCD_DEFCHAR_P 	0		// wysy³a zdefiniowany znak z pamiêci FLASH
-#define USE_LCD_DEFCHAR_E 	0		// wysy³a zdefiniowany znak z pamiêci EEPROM
-
 #define USE_LCD_CURSOR_ON 		1	// obs³uga w³¹czania/wy³¹czania kursora
 #define USE_LCD_CURSOR_BLINK 	1	// obs³uga w³¹czania/wy³¹czania migania kursora
 #define USE_LCD_CURSOR_HOME 	1	// ustawia kursor na pozycji pocz¹tkowej
@@ -86,22 +76,10 @@
 
 
 
-
-
-
-// definicje adresów w DDRAM dla ró¿nych wyœwietlaczy
-// inne s¹ w wyœwietlaczach 2wierszowych i w 4wierszowych
-#if ( (LCD_ROWS == 4) && (LCD_COLS == 16) )
-#define LCD_LINE1 0x00		// adres 1 znaku 1 wiersza
-#define LCD_LINE2 0x28		// adres 1 znaku 2 wiersza
-#define LCD_LINE3 0x14  	// adres 1 znaku 3 wiersza
-#define LCD_LINE4 0x54  	// adres 1 znaku 4 wiersza
-#else
+// definicje adresów w DDRAM dla wyœwietlacza  2wierszowego
 #define LCD_LINE1 0x00		// adres 1 znaku 1 wiersza
 #define LCD_LINE2 0x40		// adres 1 znaku 2 wiersza
-#define LCD_LINE3 0x10  	// adres 1 znaku 3 wiersza
-#define LCD_LINE4 0x50  	// adres 1 znaku 4 wiersza
-#endif
+
 
 
 // Makra upraszczaj¹ce dostêp do portów
@@ -149,7 +127,7 @@
 // deklaracje funkcji na potrzeby innych modu³ów
 void lcd_init(void);								// W£¥CZONA na sta³e do kompilacji
 void lcd_cls(void);									// W£¥CZONA na sta³e do kompilacji
-void lcd_str(char * str);							// W£¥CZONA na sta³e do kompilacji
+void lcd_str(const char * str);							// W£¥CZONA na sta³e do kompilacji
 
 void lcd_locate(uint8_t y, uint8_t x);				// domyœlnie W£¥CZONA z kompilacji w pliku lcd.c
 

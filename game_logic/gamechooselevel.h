@@ -1,41 +1,48 @@
 #pragma once
 #include "gamelog.h"
-#include "gamestate.h"
 #include "gamechoosedificulty.h"
+#include "gamestate.h"
+#include "game.h"
 
-void gameChooseLevel_pressUp(Game* game)
+void showNextLevel_gamelogic(Game* game)
 {
-    if(game->lowerLcdState == GAMELEVEL_PRO)
+    if(isGameActionEqual(game, GAMELEVEL_PRO))
     {
-        game->lowerLcdState = GAMELEVEL_CASUAL;
+        setGameAction(game, GAMELEVEL_CASUAL);
     }
 }
 
-void gameChooseLevel_pressDown(Game* game)
+void showPreviousLevel_gamelogic(Game* game)
 {
-    if(game->lowerLcdState == GAMELEVEL_CASUAL)
+    if(isGameActionEqual(game, GAMELEVEL_CASUAL))
     {
-        game->lowerLcdState = GAMELEVEL_PRO;
+        setGameAction(game, GAMELEVEL_PRO);
     }
 }
 
-void gameChooseLevel_pressBack(Game* game)
+void setLevelAndGoToNextState_gamelogic(Game* game)
 {
-    gameInit(game);
-}
-
-void gameChooseLevel_pressEnter(Game* game)
-{
-    game->level = game->lowerLcdState;
-    gameChooseDificulty(game);
+    saveActionStateAsLevel(game);
+    if(isGameLevelEqual(game, GAMELEVEL_CASUAL))
+    {
+        log("1");
+        gameStartLevel(game);
+    }
+    else
+    {
+        log("2");
+        gameChooseDificulty(game);
+    }
 }
 
 void gameChooseLevel(Game* game)
 {
-    game->upperLcdState = GAMEMENU_GAMELEVEL;
-    game->lowerLcdState = GAMELEVEL_CASUAL;
-    game->up = &gameChooseLevel_pressUp;
-    game->down = &gameChooseLevel_pressDown;
-    game->back = &gameChooseLevel_pressBack;
-    game->enter = &gameChooseLevel_pressEnter;
+    setGameLevel(game,
+                 GAMEMENU_GAMELEVEL,
+                 GAMELEVEL_CASUAL,
+                 &showNextLevel_gamelogic,
+                 &showPreviousLevel_gamelogic,
+                 &noAction,
+                 &setLevelAndGoToNextState_gamelogic,
+                 &noAction);
 }

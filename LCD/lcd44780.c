@@ -1,11 +1,10 @@
 //-----------------------------------------------------------------------------------------------------------
 // *** Obs³uga wyœwietlaczy alfanumerycznych zgodnych z HD44780 ***
-//
 // - Sterowanie: tryb 4-bitowy
 // - Dowolne przypisanie ka¿dego sygna³u steruj¹cego do dowolnego pinu mikrokontrolera
 // - Praca z pinem RW pod³¹czonym do GND lub do mikrokontrolera (sprawdzanie BusyFLAG - szybkie operacje LCD)
-
 //----------------------------------------------------------------------------------------------------------
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
@@ -134,7 +133,7 @@ uint8_t _lcd_read_byte(void)
 	SET_RW;
 
 	SET_E;
-	result = (lcd_readHalf() << 4);     // odczyt starszej czêœci bajtu z LCD D7..D4
+	result = (lcd_readHalf() << 4);	// odczyt starszej czêœci bajtu z LCD D7..D4
 	CLR_E;
 
 	SET_E;
@@ -209,7 +208,7 @@ void lcd_char(char c)
 //
 //
 //----------------------------------------------------------------------------------------
-void lcd_str(char * str)
+void lcd_str(const char * str)
 {
 	register char znak;
 	while ( (znak=*(str++)) ) lcd_char( znak );
@@ -483,7 +482,7 @@ void lcd_init(void)
 	_delay_ms(15);
 	PORT(LCD_EPORT) &= ~(1<<LCD_E);
 	PORT(LCD_RSPORT) &= ~(1<<LCD_RS);
-	#if USE_RW == 1	
+	#if USE_RW == 1
     	PORT(LCD_RWPORT) &= ~(1<<LCD_RW);
 	#endif
 
@@ -510,13 +509,13 @@ void lcd_init(void)
 
 	// ju¿ mo¿na u¿ywaæ Busy Flag
 	// tryb 4-bitowy, 2 wiersze, znak 5x7
-	lcd_write_cmd( LCDC_FUNC|LCDC_FUNC4B|LCDC_FUNC2L|LCDC_FUNC5x7 );
+	//lcd_write_cmd( LCDC_FUNC|LCDC_FUNC4B|LCDC_FUNC2L|LCDC_FUNC5x7 );
 	// wy³¹czenie kursora
-	lcd_write_cmd( LCDC_ONOFF|LCDC_CURSOROFF );
+	//lcd_write_cmd( LCDC_ONOFF|LCDC_CURSOROFF );
 	// w³¹czenie wyœwietlacza
-	lcd_write_cmd( LCDC_ONOFF|LCDC_DISPLAYON );
+	//lcd_write_cmd( LCDC_ONOFF|LCDC_DISPLAYON );
 	// przesuwanie kursora w prawo bez przesuwania zawartoœci ekranu
-	lcd_write_cmd( LCDC_ENTRY|LCDC_ENTRYR );
+	//lcd_write_cmd( LCDC_ENTRY|LCDC_ENTRYR );
 
 	// kasowanie ekranu
 	lcd_cls();
