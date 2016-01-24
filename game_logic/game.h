@@ -18,6 +18,7 @@ typedef struct Game
     short cursorPosition;
     char* wordWithChoosenChar;
     char* word;
+    char* wordId;
 }Game;
 
 typedef void(*GameFunction)(struct Game*);
