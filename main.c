@@ -1,18 +1,18 @@
 /*
  * Definicje:
  * RS, RW, E -> linie sterujace
- * D0-D7     -> linie danych wyœwietlacza
+ * D0-D7     -> linie danych wyÅ“wietlacza
  * Praca w trybie 4 bitowym D7-D4
- * Wyœwietlacz ma 2 rodzaje pamieci:
- * CGRAM- pamiec w³asnych znaków(8)
+ * WyÅ“wietlacz ma 2 rodzaje pamieci:
+ * CGRAM- pamiec wÂ³asnych znakÃ³w(8)
  * DDRAM- Kody ASCII
  */
 
 // Definicje:
-// Atmegas32 posiada dwa Timery 8 i 16 bitów
+// Atmegas32 posiada dwa Timery 8 i 16 bitÃ³w
 // Preskaler - wew dzielnik czestotliwosci taktowania dostarczanej do taktowania timera
-// Tryb pracy Timer0 ustawaimy na CTC -> licznik Timer0 w trakcie zliczania bedzie porównywany z wartoscia rejestru OCR0 (Compare Match), je¿eli równe to przerwanie
-// OCR0 8 bitów czyli zakres 0-255   OCR0 = (8000000Hz/1024preskaler/200Hz)-1 =38.06    przerwania co 200Hz     38 jest w zbiorze 0-255
+// Tryb pracy Timer0 ustawaimy na CTC -> licznik Timer0 w trakcie zliczania bedzie porÃ³wnywany z wartoscia rejestru OCR0 (Compare Match), jeÂ¿eli rÃ³wne to przerwanie
+// OCR0 8 bitÃ³w czyli zakres 0-255   OCR0 = (8000000Hz/1024preskaler/200Hz)-1 =38.06    przerwania co 200Hz     38 jest w zbiorze 0-255
 
 
 #include <avr/io.h>
@@ -20,7 +20,7 @@
 #include <avr/eeprom.h>
 #include "LCD/lcd44780.h"
 #include <util/delay.h>
-#include "d_led.h"              // do³¹czenie naszego pliku nag³ówkowego (obs³uga LED)
+#include "d_led.h"              // doÂ³Â¹czenie naszego pliku nagÂ³Ã³wkowego (obsÂ³uga LED)
 #include <avr/interrupt.h>
 
 #include <stdio.h>
@@ -46,7 +46,7 @@ static Game game =
 };
 
 
-#define LED_PIN (1<<PD0)                                                // definicja pinu do którego pod³aczamy diode LED
+#define LED_PIN (1<<PD0)                                                // definicja pinu do ktÃ³rego podÂ³aczamy diode LED
 #define LED_ON PORTD &= ~LED_PIN                                        // makrodefinicja - zalaczenia diody
 #define LED_OFF PORTD |= LED_PIN                                        // makrodefinicja - wylaczenie diody
 #define LED_TOG PORTD ^= LED_PIN                                        // makrodefinicja - zmiana stanu diody
@@ -63,12 +63,12 @@ uint8_t isPressedRight = 0;
 uint8_t isPressedEnter = 0;
 uint8_t isPressedBack = 0;
 uint8_t d1,d2,d3,d4;
-uint8_t znak_buzka[] = {14,17,27,17,17,21,17,14}; // wzór znaku buzki w pamiêci RAM
+uint8_t znak_buzka[] = {14,17,27,17,17,21,17,14}; // wzÃ³r znaku buzki w pamiÃªci RAM
 uint8_t pressed_button(uint8_t key);
 
 uint8_t pressed_button(uint8_t key){
     if (!(PIND & key)){
-        _delay_ms(80);                                                                  // czas drgañ styków
+        _delay_ms(80);                                                                  // czas drgaÃ± stykÃ³w
         if(!(PIND & key)) return 1;
     }
     return 0;
@@ -100,8 +100,8 @@ void led_end()
 
 void initializeLcd()
 {
-    DDRA |= (1<<PA7);                                                               // ustawiamy kierunek linii podœwietlenia LCD jako WYJŒCIE
-    PORTA |= (1<<PA7);                                                              // za³¹czamy podœwietlenie LCD - stan wysoki
+    DDRA |= (1<<PA7);                                                               // ustawiamy kierunek linii podÅ“wietlenia LCD jako WYJÅ’CIE
+    PORTA |= (1<<PA7);                                                              // zaÂ³Â¹czamy podÅ“wietlenie LCD - stan wysoki
 
     lcd_init();
     lcd_cursor_on();
@@ -216,12 +216,12 @@ void initializeTimer()
 {
     // ****** inicjalizacja *********
     d_led_init();           // inicjalizacja wyswietlacza multipleksowanego
-    sei();                  // w³¹czenie globalnego zezwolenia na przerwania
+    sei();                  // wÂ³Â¹czenie globalnego zezwolenia na przerwania
 }
 
 void updateTimer()
 {
-    short time = getGameTime(&game);
+    short time = getGameTimer(&game);
     d1=time/1000;
     if(d1) cy1=d1; else cy1=NIC;
     d2=(time-(d1*1000))/100;
@@ -241,7 +241,7 @@ int main(void)
     initializeLcd();
 
     DDRD &= ~(K1 | K2 | K3 | K4); // Piny klawiszy - wejscia
-    PORTD |= K1 | K2 | K3 | K4; // Podciagniecie Pinów pod VCC
+    PORTD |= K1 | K2 | K3 | K4; // Podciagniecie PinÃ³w pod VCC
 
     initializeTimer();
     gameInit(&game);
