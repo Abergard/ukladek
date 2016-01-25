@@ -1,4 +1,5 @@
 #pragma once
+#include <stdio.h>
 #include "gamesettings.h"
 
 typedef struct Game
@@ -12,12 +13,16 @@ typedef struct Game
     GameEnum actionState;
     GameEnum level;
     GameEnum dificulty;
+    short isChosen;
     short needReDraw;
-    short time;
-    short gameStartTimePoint;
+    size_t point;
+    size_t time;
+    size_t gameStartTimePoint;
     short cursorPosition;
-    char* wordWithChoosenChar;
-    char* word;
+    size_t wordId;
+    const char* emptyString;
+    char wordWithChosenChar[MAX_STRING+1];
+    char word[MAX_STRING+1];
 }Game;
 
 typedef void(*GameFunction)(struct Game*);
@@ -65,6 +70,11 @@ short isGameRunning(Game* game)
     return game->menuState == GAMEMENU_GAMESTART;
 }
 
+short isGameWin(Game* game)
+{
+    return game->menuState == GAMEEND_WIN;
+}
+
 void nextGameAction(Game* game)
 {
     ++game->actionState;
@@ -89,7 +99,7 @@ const char* getFirstLineToDisplay(Game* game)
 {
     if(isGameRunning(game))
     {
-        return game->wordWithChoosenChar;
+        return game->wordWithChosenChar;
     }
     else
     {
@@ -102,6 +112,12 @@ const char* getSecondLineToDisplay(Game* game)
     if(isGameRunning(game))
     {
         return game->word;
+    }
+    else if(isGameWin(game))
+    {
+        static char str[16];
+        sprintf(str, "p:%d", game->point);
+        return str;
     }
     else
     {
@@ -116,6 +132,6 @@ short getGameTimer(Game* game)
 
 void updateGame(Game* game)
 {
-    ++game->time;
+    game->time = game->time + 1;
     game->updateState(game);
 }

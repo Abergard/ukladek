@@ -1,6 +1,7 @@
 #pragma once
+#include "gamesettings.h"
 
-void gameInit(Game* game);
+void gameInit(Game* game, GameEnum gameEnum);
 void gameChooseLevel(Game* game);
 void gameChooseDificulty(Game* game);
 void gameStartLevel(Game* game);

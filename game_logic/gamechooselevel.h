@@ -42,7 +42,7 @@ void gameChooseLevel(Game* game)
                  GAMELEVEL_CASUAL,
                  &showNextLevel_gamelogic,
                  &showPreviousLevel_gamelogic,
-                 &noAction,
                  &setLevelAndGoToNextState_gamelogic,
+                 &noAction,
                  &noAction);
 }

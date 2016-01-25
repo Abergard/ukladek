@@ -5,18 +5,27 @@
 
 void goToChooseLevelState_gamelogic(Game* game)
 {
-    srand(game->time);
-    gameChooseLevel(game);
+    if(game->menuState == GAMEEND_WIN)
+    {
+        gameStartLevel(game);
+    }
+    else
+    {
+        gameChooseLevel(game);
+    }
 }
 
-void gameInit(Game* game)
+void gameInit(Game* game, GameEnum gameName)
 {
     setGameLevel(game,
-                 GAMEMENU_GAMENAME,
-                 GAMEINFO_PRESSKEY,
-                 &goToChooseLevelState_gamelogic,
-                 &goToChooseLevelState_gamelogic,
-                 &goToChooseLevelState_gamelogic,
+                 gameName,
+                 (gameName == GAMEEND_LOSER) ? GAMEINFO_ESC : GAMEINFO_PRESSKEY,
+                 (gameName != GAMEEND_LOSER) ? &goToChooseLevelState_gamelogic :
+                                               &noAction,
+                 (gameName != GAMEEND_LOSER) ? &goToChooseLevelState_gamelogic :
+                                               &noAction,
+                 (gameName != GAMEEND_LOSER) ? &goToChooseLevelState_gamelogic :
+                                               &noAction,
                  &goToChooseLevelState_gamelogic,
                  &noAction);
 }

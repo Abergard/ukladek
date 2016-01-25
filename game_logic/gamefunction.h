@@ -17,7 +17,7 @@ int changeRandomlyCharPosition(size_t randPosition,
     }
 }
 
-void mixCharInWord(const char* word, Game* game)
+void mixCharInWord(Game* game, const char* word)
 {
     size_t len = strlen(word);
     size_t randPosition;
@@ -35,4 +35,11 @@ void mixCharInWord(const char* word, Game* game)
         }
         game->word[randPosition] = word[pos];
     }
+}
+
+void changeCharAtPosition(char* word, size_t posFirst, size_t posSecond)
+{
+    char tmp = word[posFirst];
+    word[posFirst] = word[posSecond];
+    word[posSecond] = tmp;
 }

@@ -20,18 +20,19 @@ static Game game =
     .back = &noAction,
     .enter = &noAction,
     .updateState = &noAction,
+    .isChosen = 0,
     .needReDraw = 0,
     .time = 0,
+    .gameStartTimePoint = 0,
     .cursorPosition = 0,
-    .wordWithChoosenChar = "                ",
-    .word = "                "
+    .emptyString = "                "
 };
 
 void display()
 {
     log("----------------\n");
-    log("%s\n", getFirstLineToDisplay(&game));
-    log("%s\n", getSecondLineToDisplay(&game));
+    log("1)%s(1\n", getFirstLineToDisplay(&game));
+    log("2)%s(2\n", getSecondLineToDisplay(&game));
     log("----------------\n");
 }
 
@@ -55,6 +56,9 @@ void readKeyboard()
       case 'f':
           game.down(&game);
           return;
+      case 'p':
+          log("'%s' vs '%s'\n", game.word, getWord(game.wordId));
+          return;
     };
 }
 
@@ -63,7 +67,7 @@ void readKeyboard()
 int main()
 {
     log("%u", strlen(getWord(1)));
-    gameInit(&game);
+    gameInit(&game, GAMEMENU_GAMENAME);
     while(1)
     {
         display();

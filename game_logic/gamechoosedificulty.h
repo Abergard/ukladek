@@ -38,7 +38,7 @@ void gameChooseDificulty(Game* game)
                  GAMEDIFICULTY_NORMAL,
                  &showPreviousDificulty_gamelogic,
                  &showNextDificulty_gamelogic,
-                 &backToPreviousLevel_gamelogic,
                  &setDificultyAndGoToTheNextLevel_gamelogic,
+                 &backToPreviousLevel_gamelogic,
                  &noAction);
 }
