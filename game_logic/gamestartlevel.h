@@ -23,6 +23,7 @@ void moveChar(Game* game, Direction direction)
                          game->cursorPosition,
                          game->cursorPosition + direction);
     game->cursorPosition = game->cursorPosition + direction;
+    game->needReDraw = 1;
 }
 
 void left_gamelogic(Game* game)
@@ -48,6 +49,7 @@ void pickCharAtCursor(Game* game)
     game->wordWithChosenChar[game->cursorPosition] =
         game->word[game->cursorPosition];
     game->word[game->cursorPosition] = ' ';
+    game->needReDraw = 1;
 }
 
 void dropCharAtCursor(Game* game)
@@ -55,6 +57,7 @@ void dropCharAtCursor(Game* game)
     game->word[game->cursorPosition] =
         game->wordWithChosenChar[game->cursorPosition];
     game->wordWithChosenChar[game->cursorPosition] = '*';
+    game->needReDraw = 1;
 }
 
 size_t findFirstNotEmptyCharInWord(const char* word)
@@ -73,11 +76,6 @@ void checkWord(Game* game)
 {
     const char* word = getWord(game->wordId);
     size_t i = findFirstNotEmptyCharInWord(game->word);
-        log("'%s' vs '%s' [size: %d][%d]\n",
-            &game->word[i],
-            word,
-            strlen(word)-1,
-            strlen(word));
     if(i == MAX_STRING)
     {
         log("ERROR!\n");
@@ -112,8 +110,9 @@ void quit_gamelogic(Game* game)
 
 void update_gamelogic(Game* game)
 {
-    if(game->level == GAMELEVEL_PRO &&
-       (game->time - game->gameStartTimePoint) > getTimeDuration(game->dificulty))
+    if( (game->level == GAMELEVEL_PRO) &&
+        ((game->time - game->gameStartTimePoint) > getTimeDuration(game->dificulty))
+	  )
     {
         gameInit(game, GAMEEND_LOSER);
     }
@@ -133,6 +132,7 @@ void prepareWords(Game* game)
 
 void initializeGame(Game* game)
 {
+    game->gameStartTimePoint = game->time;
     prepareWords(game);
     setGameLevel(game,
                  GAMEMENU_GAMESTART,
@@ -142,7 +142,6 @@ void initializeGame(Game* game)
                  &choose_gamelogic,
                  &quit_gamelogic,
                  &update_gamelogic);
-    game->gameStartTimePoint = game->time;
 }
 
 void gameStartLevel(Game* game)
