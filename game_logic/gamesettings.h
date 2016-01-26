@@ -37,7 +37,7 @@ const char* toString(GameEnum gameEnum)
         "     Casual     ",
         "   Time Limit   ",
 
-        "  Ukladek Game  ",//3
+        "  Ukladek Game1 ",//3
         "  Choose Level  ",
         "    Dificulty   ",
 
@@ -89,11 +89,10 @@ size_t getTimeDuration(GameEnum gameDifiulty)
 {
     static size_t time[] =
     {
-        240, // TURTLE
+        2400, // TURTLE
         120, // BEGINER
         60,  // NORMAL
         10   // ASIAN
     };
-    log("timer: %d", time[gameDifiulty-GAMEDIFICULTY_TURTLE]);
     return time[gameDifiulty-GAMEDIFICULTY_TURTLE];
 }
