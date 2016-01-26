@@ -29,3 +29,4 @@ void gameInit(Game* game, GameEnum gameName)
                  &goToChooseLevelState_gamelogic,
                  &noAction);
 }
+
