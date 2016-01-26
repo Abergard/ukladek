@@ -108,7 +108,7 @@ const char* getSecondLineToDisplay()
     else if(isGameWin())
     {
         static char str[16];
-        sprintf(str, "p:%d", game.point);
+        sprintf(str, "p:%llu", game.point);
         return str;
     }
     else
@@ -119,7 +119,7 @@ const char* getSecondLineToDisplay()
 
 unsigned getGameTime()
 {
-    if(isGameRunning(game) == 0)
+    if(isGameRunning() == 0)
     {
         return 0;
     }

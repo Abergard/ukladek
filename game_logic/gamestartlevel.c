@@ -119,8 +119,14 @@ void update_gamelogic()
 void prepareWords()
 {
     game.wordId = rand() % 20;
-    strncpy(game.wordWithChosenChar, game.emptyString, MAX_STRING);
-    strncpy(game.word, game.emptyString, MAX_STRING);
+    strncpy_s(game.wordWithChosenChar,
+              sizeof(game.wordWithChosenChar),
+              game.emptyString,
+              MAX_STRING);
+    strncpy_s(game.word,
+              sizeof(game.word),
+              game.emptyString,
+              MAX_STRING);
     game.wordWithChosenChar[MAX_STRING] = '\0';
     game.word[MAX_STRING] = '\0';
     game.cursorPosition = 0;

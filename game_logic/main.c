@@ -9,6 +9,7 @@
 #ifdef DEBUG
 #include "gamelog.h"
 #endif
+
 #include "gamesettings.h"
 #include "game.h"
 #include "gameinit.h"
@@ -23,7 +24,7 @@ void display()
 
 void readKeyboard()
 {
-    char key = getch();
+    char key = _getch();
     log("%c\n", key);
     switch(key)
     {
@@ -49,7 +50,7 @@ void readKeyboard()
 
 int main()
 {
-    log("%u", strlen(getWord(1)));
+    log("%llu", strlen(getWord(1)));
     gameInit(GAMEMENU_GAMENAME);
     while(1)
     {
