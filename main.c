@@ -31,22 +31,6 @@
 #include "game_logic/gameinit.h"
 #include "game_logic/gamesettings.h"
 
-static Game game =
-{
-    .up = &noAction,
-    .down = &noAction,
-    .back = &noAction,
-    .enter = &noAction,
-    .updateState = &noAction,
-    .isChosen = 0,
-    .needReDraw = 0,
-    .time = 0,
-    .gameStartTimePoint = 0,
-    .cursorPosition = 0,
-    .emptyString = "                "
-};
-
-
 #define LED_PIN (1<<PD0)                                                // definicja pinu do którego pod³aczamy diode LED
 #define LED_ON PORTD &= ~LED_PIN                                        // makrodefinicja - zalaczenia diody
 #define LED_OFF PORTD |= LED_PIN                                        // makrodefinicja - wylaczenie diody
@@ -56,19 +40,15 @@ static Game game =
 #define K3 (1<<PD5)
 #define K4 (1<<PD4)
 
-short int posX = 0;
-short int poxY = 0;
-
 uint8_t isPressedLeft = 0;
 uint8_t isPressedRight = 0;
 uint8_t isPressedEnter = 0;
 uint8_t isPressedBack = 0;
-uint8_t d1,d2,d3,d4;
-uint8_t znak_buzka[] = {14,17,27,17,17,21,17,14}; 										// wzór znaku buzki w pamiêci RAM
-uint8_t pressed_button(uint8_t key);
 
-uint8_t pressed_button(uint8_t key){
-    if (!(PIND & key)){
+uint8_t pressed_button(uint8_t key)
+{
+    if (!(PIND & key))
+        {
         _delay_ms(80);                                                                  // czas drgañ styków
         if(!(PIND & key)) return 1;
     }
@@ -76,22 +56,25 @@ uint8_t pressed_button(uint8_t key){
 }
 
 
-void led_win(){
-            DDRD |= LED_PIN;
-            int i = 0;
-            while(i < 10){
-                LED_TOG;
-                _delay_ms(2000);
-                i++;
-            }
-            LED_OFF;
+void led_win()
+{
+    DDRD |= LED_PIN;
+    int i = 0;
+    while(i < 10)
+    {
+        LED_TOG;
+        _delay_ms(2000);
+        i++;
     }
+    LED_OFF;
+}
 
 void led_end()
 {
     DDRD |= LED_PIN;
     int i = 0;
-    while(i < 10){
+    while(i < 10)
+    {
         LED_TOG;
         _delay_ms(2000);
         i++;
@@ -132,7 +115,7 @@ void updateLeftKey()
         if(isPressedLeft == 0)
         {
             isPressedLeft = 1;
-            game.up(&game);
+            game.up();
         }
     }
     else
@@ -148,7 +131,7 @@ void updateRightKey()
         if(isPressedRight == 0)
         {
             isPressedRight = 1;
-            game.down(&game);
+            game.down();
         }
     }
     else
@@ -164,7 +147,7 @@ void updateEnterKey()
         if(isPressedEnter == 0)
         {
             isPressedEnter = 1;
-            game.enter(&game);
+            game.enter();
         }
     }
     else
@@ -180,7 +163,7 @@ void updateBackKey()
         if(isPressedBack == 0)
         {
             isPressedBack = 1;
-            game.back(&game);
+            game.back();
         }
     }
     else
@@ -199,7 +182,7 @@ void updateKeyboard()
 
 void printCursorOnLcd()
 {
-    lcd_locate(1,game.cursorPosition);
+    lcd_locate(1, game.cursorPosition);
 }
 
 void display()
@@ -207,8 +190,8 @@ void display()
     if(game.needReDraw)
     {
         game.needReDraw = 0;
-        printLcdInFirstRow(getFirstLineToDisplay(&game));
-        printLcdInSecondRow(getSecondLineToDisplay(&game));
+        printLcdInFirstRow(getFirstLineToDisplay());
+        printLcdInSecondRow(getSecondLineToDisplay());
     }
     //printCursorOnLcd();
 }
@@ -222,19 +205,7 @@ void initializeTimer()
 
 void updateTimer()
 {
-//
-// 	cy3=7;
-// 	cy4=8;
-	unsigned time = getGameTime(&game);
-	//time /= 1000;
-//    d1=time/1000;
-//    if(d1) cy1=d1; else cy1=NIC;
-//    d2=(time-(d1*1000))/100;
-//    if(d2) cy2=d2; else cy2=(time>999)?0:NIC;
-//    d3=(time-(d1*1000)-(d2*100))/10;
-//    if(d3) cy3=d3; else cy3=(time>99)?0:NIC;
-//    d4=(time-(d1*1000)-(d2*100)-(d3*10));
-//    cy4=5;
+    unsigned time = getGameTime();
 
     cy3 = time / 1000;
     time -= cy3*1000;
@@ -244,36 +215,24 @@ void updateTimer()
     time -= cy1*10;
     cy2 = time;
 
-
     _delay_ms(430);
-
-
- //  if(d1 == 1) {
-//     led_end();
- //}
-
 }
 
 int main(void)
 {
-
     initializeLcd();
-    cy1=1;
- 	cy2=2;
- 	cy3=3;
- 	cy4=4;
 
     DDRD &= ~(K1 | K2 | K3 | K4);    // Piny klawiszy - wejscia
     PORTD |= K1 | K2 | K3 | K4;      // Podciagniecie Pinów pod VCC
 
     initializeTimer();
-    gameInit(&game, GAMEMENU_GAMENAME);
+    gameInit(GAMEMENU_GAMENAME);
 
     while(1)
     {
-        updateGame(&game);
+        updateGame();
         updateKeyboard();
-       updateTimer();
+        updateTimer();
         display();
     }
     return 0;

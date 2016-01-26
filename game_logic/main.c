@@ -9,30 +9,15 @@
 #ifdef DEBUG
 #include "gamelog.h"
 #endif
-
+#include "gamesettings.h"
 #include "game.h"
 #include "gameinit.h"
-
-static Game game =
-{
-    .up = &noAction,
-    .down = &noAction,
-    .back = &noAction,
-    .enter = &noAction,
-    .updateState = &noAction,
-    .isChosen = 0,
-    .needReDraw = 0,
-    .time = 0,
-    .gameStartTimePoint = 0,
-    .cursorPosition = 0,
-    .emptyString = "                "
-};
 
 void display()
 {
     log("----------------\n");
-    log("1)%s(1\n", getFirstLineToDisplay(&game));
-    log("2)%s(2\n", getSecondLineToDisplay(&game));
+    log("1)%s(1\n", getFirstLineToDisplay());
+    log("2)%s(2\n", getSecondLineToDisplay());
     log("----------------\n");
 }
 
@@ -45,16 +30,16 @@ void readKeyboard()
       case 'q':
           exit(0);
       case 'a':
-          game.up(&game);
+          game.up();
           return;
       case 's':
-          game.back(&game);
+          game.back();
           return;
       case 'd':
-          game.enter(&game);
+          game.enter();
           return;
       case 'f':
-          game.down(&game);
+          game.down();
           return;
       case 'p':
           log("'%s' vs '%s'\n", game.word, getWord(game.wordId));
@@ -62,17 +47,15 @@ void readKeyboard()
     };
 }
 
-
-
 int main()
 {
     log("%u", strlen(getWord(1)));
-    gameInit(&game, GAMEMENU_GAMENAME);
+    gameInit(GAMEMENU_GAMENAME);
     while(1)
     {
         display();
         readKeyboard();
-        updateGame(&game);
+        updateGame();
     }
     return 0;
 }

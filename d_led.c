@@ -1,10 +1,12 @@
-#include <avr/io.h>			// do³¹czenie g³ównego systemowego  pliku nag³ówkowego
-#include <avr/interrupt.h>	// do³¹czenie pl. nag³ówkowego potrzebnego do obs³. przerwañ
-#include <avr/pgmspace.h>	// do³¹czenie pl. nag³ówkowego potrzebnego do odczytu
-							// danych zawartych w pamiêci programu FLASH
+#include <avr/io.h>         // do³¹czenie g³ównego systemowego  pliku nag³ówkowego
+#include <avr/interrupt.h>  // do³¹czenie pl. nag³ówkowego potrzebnego do obs³. przerwañ
+#include <avr/pgmspace.h>   // do³¹czenie pl. nag³ówkowego potrzebnego do odczytu
+                            // danych zawartych w pamiêci programu FLASH
 
-#include "d_led.h"			// do³¹czenie naszego pliku nag³ówkowego
-							// w nim znajduj¹ siê potrzebne tu m.in. definicje preprocesora
+#include "d_led.h"          // do³¹czenie naszego pliku nag³ówkowego
+                            // w nim znajduj¹ siê potrzebne tu m.in. definicje preprocesora
+
+#include "game_logic/game.h"
 
 // definicje zmiennych globalnych przechowuj¹cych cyfry do wyœwietlania
 // volatile – poniewa¿ bêd¹ wykorzystywane do odczytu i zapisu zarówno w przerwaniu i programie
@@ -16,19 +18,19 @@ volatile uint8_t cy4;
 
 
 // definicja tablicy zawieraj¹cej definicje bitowe cyfr LED
-const uint8_t cyfry[15] PROGMEM = {
-
-			0xC0,	// 0
-			0xF9,	// 1   0b10011111
-			0xA4,	// 2
-			0xB0,	// 3
-			0x99,	// 4   0b10011001
-			0x92,	// 5
-			0x82,	// 6
-			0xD8,	// 7
-			0x80,	// 8
-			0x90,	// 9   0b00001001
-		    0xFF	// NIC (puste miejsce)
+const uint8_t cyfry[15] PROGMEM =
+{
+    0xC0,   // 0
+    0xF9,   // 1   0b10011111
+    0xA4,   // 2
+    0xB0,   // 3
+    0x99,   // 4   0b10011001
+    0x92,   // 5
+    0x82,   // 6
+    0xD8,   // 7
+    0x80,   // 8
+    0x90,   // 9   0b00001001
+    0xFF    // NIC (puste miejsce)
 };
 
 
@@ -36,35 +38,46 @@ const uint8_t cyfry[15] PROGMEM = {
 // ****** definicja funkcji inicjalizuj¹cej pracê z wyœwietlaczem multipleksowanym
 void d_led_init(void)
 {
-	LED_DATA_DIR = 0xFF;   					// wszystkie piny portu C jako WYJŒCIA(katody)
-	LED_DATA = 0xFF;						// wygaszenie wszystkich katod – stan wysoki
-	ANODY_DIR |= CA1 | CA2 | CA3 | CA4;		// 4 piny portu A jako WYJŒCIA (anody wyœwietlaczy)
-	ANODY_PORT |= CA1 | CA2 | CA3  | CA4;	// wygaszenie wszystkich wyœwietlaczy - anody
+    LED_DATA_DIR = 0xFF;                    // wszystkie piny portu C jako WYJŒCIA(katody)
+    LED_DATA = 0xFF;                        // wygaszenie wszystkich katod – stan wysoki
+    ANODY_DIR |= CA1 | CA2 | CA3 | CA4;     // 4 piny portu A jako WYJŒCIA (anody wyœwietlaczy)
+    ANODY_PORT |= CA1 | CA2 | CA3  | CA4;   // wygaszenie wszystkich wyœwietlaczy - anody
 
-	// ustawienie TIMER0
-	TCCR0 |= (1<<WGM01);					// tryb CTC Mode2 Nota PDF
-	TCCR0 |= (1<<CS02)|(1<<CS00);			// preskaler = 1024
-	OCR0 = 38;								// dodatkowy podzia³ przez 39 (rej. przepe³nienia)
-	TIMSK |= (1<<OCIE0);					// zezwolenie na przerwanie CompareMatch
+    // ustawienie TIMER0
+    TCCR0 |= (1<<WGM01);                    // tryb CTC Mode2 Nota PDF
+    TCCR0 |= (1<<CS02)|(1<<CS00);           // preskaler = 1024
+    OCR0 = 38;                              // dodatkowy podzia³ przez 39 (rej. przepe³nienia)
+    TIMSK |= (1<<OCIE0);                    // zezwolenie na przerwanie CompareMatch
 }
 
+/* unsigned time; */
 
 // ================= PROCEDURA OBS£UGI PRZERWANIA – COMPARE MATCH
 ISR(TIMER0_COMP_vect)
 {
-	static uint8_t licznik=1;										// zmienna do prze³¹czania kolejno anod wyœwietlacza
+    static uint8_t licznik=1;                                       // zmienna do prze³¹czania kolejno anod wyœwietlacza
 
-	ANODY_PORT = (ANODY_PORT | MASKA_ANODY);						// wygaszenie wszystkich wyœwietlaczy
+    /* ++game.time; */
 
-	if(licznik==1) 		LED_DATA = pgm_read_byte( &cyfry[cy1] );	// gdy zapalony wyœw.1 podaj stan zmiennej c1
-	else if(licznik==2) LED_DATA = pgm_read_byte( &cyfry[cy2] );	// gdy zapalony wyœw.2 podaj stan zmiennej c2
-	else if(licznik==4) LED_DATA = pgm_read_byte( &cyfry[cy3] );	// gdy zapalony wyœw.3 podaj stan zmiennej c3
-	else if(licznik==8) LED_DATA = pgm_read_byte( &cyfry[cy4] );	// gdy zapalony wyœw.4 podaj stan zmiennej c4
+    /* time = getGameTime(); */
+    /* cy3 = time / 1000; */
+    /* time -= cy3*1000; */
+    /* cy4 = time / 100; */
+    /* time -= cy4*100; */
+    /* cy1 = time / 10; */
+    /* time -= cy1*10; */
+    /* cy2 = time; */
 
-	ANODY_PORT = (ANODY_PORT & ~MASKA_ANODY) | (~licznik & MASKA_ANODY);			// cykliczne prze³¹czanie kolejnej anody w ka¿dym przerwaniu
+    ANODY_PORT = (ANODY_PORT | MASKA_ANODY);                        // wygaszenie wszystkich wyœwietlaczy
 
-	// operacje cyklicznego przesuwania bitu zapalaj¹cego anody w zmiennej licznik
-	licznik <<= 1;					// przesuniêcie zawartoœci bitów licznika o 1 w lewo
-	if(licznik>8) licznik = 1;		// jeœli licznik wiêkszy ni¿ 8 to ustaw na 1
+    if(licznik==1)      LED_DATA = pgm_read_byte( &cyfry[cy1] );    // gdy zapalony wyœw.1 podaj stan zmiennej c1
+    else if(licznik==2) LED_DATA = pgm_read_byte( &cyfry[cy2] );    // gdy zapalony wyœw.2 podaj stan zmiennej c2
+    else if(licznik==4) LED_DATA = pgm_read_byte( &cyfry[cy3] );    // gdy zapalony wyœw.3 podaj stan zmiennej c3
+    else if(licznik==8) LED_DATA = pgm_read_byte( &cyfry[cy4] );    // gdy zapalony wyœw.4 podaj stan zmiennej c4
+
+    ANODY_PORT = (ANODY_PORT & ~MASKA_ANODY) | (~licznik & MASKA_ANODY);            // cykliczne prze³¹czanie kolejnej anody w ka¿dym przerwaniu
+
+    // operacje cyklicznego przesuwania bitu zapalaj¹cego anody w zmiennej licznik
+    licznik <<= 1;                  // przesuniêcie zawartoœci bitów licznika o 1 w lewo
+    if(licznik>8) licznik = 1;      // jeœli licznik wiêkszy ni¿ 8 to ustaw na 1
 }
-
