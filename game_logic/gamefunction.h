@@ -21,7 +21,6 @@ void mixCharInWord(Game* game, const char* word)
 {
     size_t len = strlen(word);
     size_t randPosition;
-    int isChange = 0;
     size_t retryNumber = 0;
     for(size_t pos = 0; pos < len; ++pos)
     {
