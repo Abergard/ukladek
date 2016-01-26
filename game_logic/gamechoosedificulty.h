@@ -31,6 +31,7 @@ void showNextDificulty_gamelogic(Game* game)
     }
 }
 
+
 void gameChooseDificulty(Game* game)
 {
     setGameLevel(game,
