@@ -38,11 +38,12 @@ static Game game =
     .back = &noAction,
     .enter = &noAction,
     .updateState = &noAction,
-    .time = 0,
-    .wordId = 0,
+    .isChosen = 0,
     .needReDraw = 0,
+    .time = 0,
+    .gameStartTimePoint = 0,
     .cursorPosition = 0,
-    .word = "                "
+    .emptyString = "                "
 };
 
 
@@ -63,7 +64,7 @@ uint8_t isPressedRight = 0;
 uint8_t isPressedEnter = 0;
 uint8_t isPressedBack = 0;
 uint8_t d1,d2,d3,d4;
-uint8_t znak_buzka[] = {14,17,27,17,17,21,17,14}; // wzór znaku buzki w pamiêci RAM
+uint8_t znak_buzka[] = {14,17,27,17,17,21,17,14}; 										// wzór znaku buzki w pamiêci RAM
 uint8_t pressed_button(uint8_t key);
 
 uint8_t pressed_button(uint8_t key){
@@ -105,7 +106,7 @@ void initializeLcd()
 
     lcd_init();
     lcd_cursor_on();
-    lcd_blink_on();
+    //lcd_blink_on();
 }
 
 void printOnLcdInRow(const char* msg, uint8_t position)
@@ -209,7 +210,7 @@ void display()
         printLcdInFirstRow(getFirstLineToDisplay(&game));
         printLcdInSecondRow(getSecondLineToDisplay(&game));
     }
-    printCursorOnLcd();
+    //printCursorOnLcd();
 }
 
 void initializeTimer()
@@ -221,36 +222,58 @@ void initializeTimer()
 
 void updateTimer()
 {
-    short time = getGameTimer(&game);
-    d1=time/1000;
-    if(d1) cy1=d1; else cy1=NIC;
-    d2=(time-(d1*1000))/100;
-    if(d2) cy2=d2; else cy2=(time>999)?0:NIC;
-    d3=(time-(d1*1000)-(d2*100))/10;
-    if(d3) cy3=d3; else cy3=(time>99)?0:NIC;
-    d4=(time-(d1*1000)-(d2*100)-(d3*10));
-    cy4=d4;
-    _delay_ms(80);
+//
+// 	cy3=7;
+// 	cy4=8;
+	unsigned time = getGameTime(&game);
+	//time /= 1000;
+//    d1=time/1000;
+//    if(d1) cy1=d1; else cy1=NIC;
+//    d2=(time-(d1*1000))/100;
+//    if(d2) cy2=d2; else cy2=(time>999)?0:NIC;
+//    d3=(time-(d1*1000)-(d2*100))/10;
+//    if(d3) cy3=d3; else cy3=(time>99)?0:NIC;
+//    d4=(time-(d1*1000)-(d2*100)-(d3*10));
+//    cy4=5;
+
+    cy3 = time / 1000;
+    time -= cy3*1000;
+    cy4 = time / 100;
+    time -= cy4*100;
+    cy1 = time / 10;
+    time -= cy1*10;
+    cy2 = time;
+
+
+    _delay_ms(430);
+
+
  //  if(d1 == 1) {
 //     led_end();
  //}
+
 }
 
 int main(void)
 {
-    initializeLcd();
 
-    DDRD &= ~(K1 | K2 | K3 | K4); // Piny klawiszy - wejscia
-    PORTD |= K1 | K2 | K3 | K4; // Podciagniecie Pinów pod VCC
+    initializeLcd();
+    cy1=1;
+ 	cy2=2;
+ 	cy3=3;
+ 	cy4=4;
+
+    DDRD &= ~(K1 | K2 | K3 | K4);    // Piny klawiszy - wejscia
+    PORTD |= K1 | K2 | K3 | K4;      // Podciagniecie Pinów pod VCC
 
     initializeTimer();
-    gameInit(&game);
+    gameInit(&game, GAMEMENU_GAMENAME);
 
     while(1)
     {
         updateGame(&game);
         updateKeyboard();
-        updateTimer();
+       updateTimer();
         display();
     }
     return 0;
