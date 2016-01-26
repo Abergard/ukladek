@@ -16,8 +16,8 @@ typedef struct Game
     short isChosen;
     short needReDraw;
     size_t point;
-    size_t time;
-    size_t gameStartTimePoint;
+    unsigned time;
+    unsigned gameStartTimePoint;
     short cursorPosition;
     size_t wordId;
     const char* emptyString;
@@ -51,6 +51,7 @@ void setGameAction(Game* game,
                    GameEnum action)
 {
     game->actionState = action;
+    game->needReDraw = 1;
 }
 
 short isGameActionEqual(Game* game,
@@ -78,11 +79,13 @@ short isGameWin(Game* game)
 void nextGameAction(Game* game)
 {
     ++game->actionState;
+    game->needReDraw = 1;
 }
 
 void previousGameAction(Game* game)
 {
     --game->actionState;
+    game->needReDraw = 1;
 }
 
 void saveActionStateAsLevel(Game* game)
@@ -125,9 +128,16 @@ const char* getSecondLineToDisplay(Game* game)
     }
 }
 
-short getGameTimer(Game* game)
+unsigned getGameTime(Game* game)
 {
-    return game->time;
+	if(isGameRunning(game))
+	{
+	    return game->time - game->gameStartTimePoint;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 void updateGame(Game* game)
