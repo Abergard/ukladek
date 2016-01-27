@@ -33,26 +33,26 @@ const char* getWord(size_t index)
 {
     static char* words[] =
     {//  123456789.......
-        "Tomek",//1
-        "Lukasz",//2
+        "Tom",//1
+        "Luke",//2
         "Banan",//3
-        "Mikrokontroler",//4
-        "Plyta AVR",//5
+        "Mikro",//4
+        "AVR",//5
         "Laptop",//6
-        "Projektowanie",//7
-        "Sterowanie",//8
-        "Programowanie",//9
+        "Porojekt",//7
+        "Ster",//8
+        "Gram",//9
         "Atmega",//10
-        "Bezpieczenstwo",//11
+        "Wlam",//11
         "Procesor",//12
         "Obudowa",//13
-        "Konfucjusz",//14
-        "Indiosynkrazja",//15
+        "Korek",//14
+        "Ogorek",//15
         "Abelard",//16
-        "Katarzyna",//17
-        "Komentarz",//18
-        "Reading",//19
-        "Lutownica"//20
+        "Kran",//17
+        "Komin",//18
+        "Read",//19
+        "Lucek"//20
     };
     return words[index];
 }
@@ -61,10 +61,10 @@ size_t getTimeDuration(GameEnum gameDifiulty)
 {
     static size_t time[] =
     {
-        2400, // TURTLE
-        120, // BEGINER
-        60,  // NORMAL
-        10   // ASIAN
+        2403, // TURTLE
+        123, // BEGINER
+        63,  // NORMAL
+        13   // ASIAN
     };
     return time[gameDifiulty-GAMEDIFICULTY_TURTLE];
 }

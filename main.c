@@ -48,8 +48,7 @@ uint8_t isPressedBack = 0;
 uint8_t pressed_button(uint8_t key)
 {
     if (!(PIND & key))
-        {
-        _delay_ms(80);                                                                  // czas drgañ styków
+    {                                                              // czas drgañ styków
         if(!(PIND & key)) return 1;
     }
     return 0;
@@ -63,7 +62,7 @@ void led_win()
     while(i < 10)
     {
         LED_TOG;
-        _delay_ms(2000);
+        _delay_ms(500);
         i++;
     }
     LED_OFF;
@@ -76,7 +75,7 @@ void led_end()
     while(i < 10)
     {
         LED_TOG;
-        _delay_ms(2000);
+        _delay_ms(500);
         i++;
     }
     LED_OFF;
@@ -178,6 +177,7 @@ void updateKeyboard()
     updateRightKey();
     updateEnterKey();
     updateBackKey();
+    _delay_ms(80);
 }
 
 void printCursorOnLcd()
@@ -192,6 +192,18 @@ void display()
         game.needReDraw = 0;
         printLcdInFirstRow(getFirstLineToDisplay());
         printLcdInSecondRow(getSecondLineToDisplay());
+    }
+    if(game.isEnd)
+    {
+    	game.isEnd = 0;
+        if(game.menuState == GAMEEND_WIN)
+        {
+        	led_win();
+        }
+        else if(game.menuState == GAMEEND_LOSER)
+        {
+        	led_end();
+        }
     }
     //printCursorOnLcd();
 }
@@ -232,7 +244,7 @@ int main(void)
     {
         updateGame();
         updateKeyboard();
-        updateTimer();
+        //updateTimer();
         display();
     }
     return 0;

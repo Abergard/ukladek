@@ -50,23 +50,31 @@ void d_led_init(void)
     TIMSK |= (1<<OCIE0);                    // zezwolenie na przerwanie CompareMatch
 }
 
-/* unsigned time; */
+unsigned time;
 
 // ================= PROCEDURA OBS£UGI PRZERWANIA – COMPARE MATCH
 ISR(TIMER0_COMP_vect)
 {
+	static int licz = 0;
+
     static uint8_t licznik=1;                                       // zmienna do prze³¹czania kolejno anod wyœwietlacza
 
-    /* ++game.time; */
+	licz++;
+ 	if (!(licz % 400))
+ 	{
 
-    /* time = getGameTime(); */
-    /* cy3 = time / 1000; */
-    /* time -= cy3*1000; */
-    /* cy4 = time / 100; */
-    /* time -= cy4*100; */
-    /* cy1 = time / 10; */
-    /* time -= cy1*10; */
-    /* cy2 = time; */
+ 	     ++game.time;
+ 	}
+
+
+     time = getGameTime();
+     cy3 = time / 1000;
+     time -= cy3*1000;
+     cy4 = time / 100;
+     time -= cy4*100;
+     cy1 = time / 10;
+     time -= cy1*10;
+     cy2 = time;
 
     ANODY_PORT = (ANODY_PORT | MASKA_ANODY);                        // wygaszenie wszystkich wyœwietlaczy
 
@@ -79,5 +87,14 @@ ISR(TIMER0_COMP_vect)
 
     // operacje cyklicznego przesuwania bitu zapalaj¹cego anody w zmiennej licznik
     licznik <<= 1;                  // przesuniêcie zawartoœci bitów licznika o 1 w lewo
-    if(licznik>8) licznik = 1;      // jeœli licznik wiêkszy ni¿ 8 to ustaw na 1
+    if(licznik>8)
+    {
+    	licznik = 1;      // jeœli licznik wiêkszy ni¿ 8 to ustaw na 1
+    }
+//
+//    if(slowerPls>1000000)
+//    {
+//    	slowerPls = 0;
+//    	++game.time;
+//    }
 }

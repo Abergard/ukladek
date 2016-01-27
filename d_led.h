@@ -18,7 +18,6 @@
 #define MASKA_ANODY (CA1|CA2|CA3|CA4)
 
 
-
 #define NIC 10
 
 // same DEKLARACJE zmiennych globalnych na potrzeby wykorzystania ich w innych plikach projektu

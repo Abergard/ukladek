@@ -18,7 +18,8 @@ Game game =
     .time = 0,
     .gameStartTimePoint = 0,
     .cursorPosition = 0,
-    .emptyString = "                "
+    .emptyString = "                ",
+    .isEnd = 0
 };
 
 void setGameLevel(GameEnum menuState,
@@ -107,9 +108,9 @@ const char* getSecondLineToDisplay()
     }
     else if(isGameWin())
     {
-        static char str[16];
+        char str[16] = "                ";
         sprintf(str, "p:%llu", game.point);
-        return str;
+        return "                ";
     }
     else
     {
@@ -135,6 +136,6 @@ unsigned getGameTime()
 
 void updateGame()
 {
-    game.time = game.time + 1;
+    //game.time = game.time + 1;
     game.updateState();
 }

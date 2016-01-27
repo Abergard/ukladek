@@ -34,7 +34,7 @@ void left_gamelogic()
 
 void right_gamelogic()
 {
-    if(game.cursorPosition == MAX_STRING-1)
+    if(game.cursorPosition == strlen(getWord(game.wordId))-1)
     {
         return;
     }
@@ -76,12 +76,14 @@ void checkWord()
     if(i == MAX_STRING)
     {
         log("ERROR!\n");
+        game.isEnd = 1;
         gameInit(GAMEEND_ERROR);
     }
     if(strncmp(&game.word[i], word, strlen(word)) == 0)
     {
         log("WIN\n");
         ++game.point;
+        game.isEnd = 1;
         gameInit(GAMEEND_WIN);
     }
 }
@@ -112,6 +114,7 @@ void update_gamelogic()
       )
     {
         game.point = 0;
+        game.isEnd = 1;
         gameInit(GAMEEND_LOSER);
     }
 }
@@ -119,12 +122,10 @@ void update_gamelogic()
 void prepareWords()
 {
     game.wordId = rand() % 20;
-    strncpy_s(game.wordWithChosenChar,
-              sizeof(game.wordWithChosenChar),
+    strncpy(game.wordWithChosenChar,
               game.emptyString,
               MAX_STRING);
-    strncpy_s(game.word,
-              sizeof(game.word),
+    strncpy(game.word,
               game.emptyString,
               MAX_STRING);
     game.wordWithChosenChar[MAX_STRING] = '\0';

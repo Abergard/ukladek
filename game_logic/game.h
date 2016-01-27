@@ -23,6 +23,7 @@ typedef struct Game
     const char* emptyString;
     char wordWithChosenChar[MAX_STRING+1];
     char word[MAX_STRING+1];
+    short isEnd;
 }Game;
 
 extern Game game;
